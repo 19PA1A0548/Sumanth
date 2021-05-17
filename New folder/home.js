@@ -2,6 +2,10 @@ var express = require('express');
 
 var app = express()  
 
+var bodyParser=require("body-parser")
+
+app.use(bodyParser.urlencoded({ extended: false }))
+
 app.use(express.static('public'));
 
 var mongojs = require('mongojs');
@@ -14,13 +18,13 @@ app.get('/', function (req, res) {
 	res.sendFile(__dirname+"/public/home.html")
 })  
 
-app.get('/signupsubmi',function(req,res) {
+app.post('/signupsubmi',function(req,res) {
 	var d={
-		password:req.query.pass,
-		username:req.query.us,
-		Phonenumber:req.query.phn,
-		Email:req.query.em,
-		Fullname:req.query.full
+		password:req.body.pass,
+		username:req.body.us,
+		Phonenumber:req.body.phn,
+		Email:req.body.em,
+		Fullname:req.body.full
 	}
 	console.log(d);
 	db.sumanth.insert(d,function (err,docs) {
@@ -33,7 +37,7 @@ app.get('/signupsubmi',function(req,res) {
 		
 	})
 })
-app.get("/login",function(req,res){
+app.post("/login",function(req,res){
 	res.sendFile(__dirname+"/public/home.html");
 })
 app.listen(3000, function () {  
